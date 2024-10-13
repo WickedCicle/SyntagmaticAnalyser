@@ -1,0 +1,8 @@
+*.iml
+target/
+.idea
+log
+*.log
+temp
+*.ipr
+*.txt
