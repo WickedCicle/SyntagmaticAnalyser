@@ -17,6 +17,6 @@ public class WordWithSyntagmaticLinks {
 	public String toString() {
 		return "\n" + word + "\n" +
 			"количестве уникальных слов = " + numberOfUniqueWords + "\n" +
-			"количество связей = " + numberOfLinks;
+			"С-связей = " + numberOfLinks;
 	}
 }

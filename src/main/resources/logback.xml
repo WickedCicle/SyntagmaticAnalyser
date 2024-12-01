@@ -1,0 +1,13 @@
+<configuration>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>log/app.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>[%level] [%d{dd/MM/YYYY HH:mm:ss.SSS}] [%thread] [%logger] %message%n%xException</pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
