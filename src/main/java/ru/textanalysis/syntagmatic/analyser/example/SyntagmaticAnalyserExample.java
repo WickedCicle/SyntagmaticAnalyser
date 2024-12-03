@@ -1,6 +1,5 @@
 package ru.textanalysis.syntagmatic.analyser.example;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import ru.textanalysis.syntagmatic.analyser.SyntagmaticAnalyser;
@@ -9,6 +8,7 @@ import ru.textanalysis.syntagmatic.analyser.graphemathic.SyntagmaticAnalysisGPar
 import ru.textanalysis.syntagmatic.analyser.syntagmatic.WordForSyntagmatic;
 import ru.textanalysis.syntagmatic.analyser.syntagmatic.WordWithSyntagmaticLinks;
 
+import org.apache.commons.lang3.StringUtils;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,13 +28,13 @@ public class SyntagmaticAnalyserExample {
 		String outputTableFilePath = System.getProperty("output-table-file-path");
 		String allowedTypeOfSpeechForResultFilePath = System.getProperty("allowed-type-of-speech-for-result-file-path");
 
-		if (textFilePath == null || (outputRelationshipFilePath == null && outputSyntagmaticLinksFilePath == null && outputTableFilePath == null)) {
+		if (StringUtils.isBlank(textFilePath) || (StringUtils.isBlank(outputRelationshipFilePath) && StringUtils.isBlank(outputSyntagmaticLinksFilePath) && StringUtils.isBlank(outputTableFilePath))) {
 			System.out.println("Должны быть указаны пути как для входного, так хотя бы для одного из выходных файлов");
 		} else {
 			SyntagmaticAnalyser syntagmaticAnalyser = new SyntagmaticAnalyserImpl();
 			syntagmaticAnalyser.init();
 
-			if (allowedTypeOfSpeechForResultFilePath != null) {
+			if (StringUtils.isNotBlank(allowedTypeOfSpeechForResultFilePath)) {
 				addAllowedTypeOfSpeechFile(allowedTypeOfSpeechForResultFilePath, syntagmaticAnalyser);
 			}
 
@@ -44,15 +44,15 @@ public class SyntagmaticAnalyserExample {
 
 			readTextFile(textFilePath, syntagmaticAnalyser);
 
-			if (outputRelationshipFilePath != null) {
+			if (StringUtils.isNotBlank(outputRelationshipFilePath)) {
 				createRelationshipFile(outputRelationshipFilePath, syntagmaticAnalyser.getRelationshipsResult());
 			}
-			if (outputSyntagmaticLinksFilePath != null || outputTableFilePath != null) {
+			if (StringUtils.isNotBlank(outputSyntagmaticLinksFilePath) || StringUtils.isNotBlank(outputTableFilePath)) {
 				List<WordWithSyntagmaticLinks> syntagmaticLinks = syntagmaticAnalyser.getSyntagmaticLinksResult();
-				if (outputSyntagmaticLinksFilePath != null) {
+				if (StringUtils.isNotBlank(outputSyntagmaticLinksFilePath)) {
 					createSyntagmaticLinksFile(outputSyntagmaticLinksFilePath, syntagmaticLinks);
 				}
-				if (outputTableFilePath != null) {
+				if (StringUtils.isNotBlank(outputTableFilePath)) {
 					createTableFile(outputTableFilePath, syntagmaticLinks);
 				}
 			}
