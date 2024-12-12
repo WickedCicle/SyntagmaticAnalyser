@@ -1,5 +1,7 @@
 package ru.textanalysis.syntagmatic.analyser.example;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import ru.textanalysis.syntagmatic.analyser.SyntagmaticAnalyser;
@@ -78,9 +80,23 @@ public class SyntagmaticAnalyserExample {
 	private static void readTextFile(String textFilePath, SyntagmaticAnalyser syntagmaticAnalyser) {
 		try {
 			SyntagmaticAnalysisGParser gParser = new SyntagmaticAnalysisGParser();
-			String text = Files.readString(Paths.get(textFilePath), StandardCharsets.UTF_8);
-			List<List<String>> paragraphs = gParser.parserText(text);
-			paragraphs.forEach(paragraph -> paragraph.forEach(syntagmaticAnalyser::analyse));
+			File file = new File(textFilePath);
+			StringBuilder stringBuilder = new StringBuilder();
+			try (LineIterator it = FileUtils.lineIterator(file, "UTF-8")) {
+				while (it.hasNext()) {
+					String currentLine = it.nextLine();
+					stringBuilder.append(currentLine).append(" ");
+					if (currentLine.matches(".*[!?.]$")) {
+						List<List<String>> paragraphs = gParser.parserText(stringBuilder.toString());
+						paragraphs.forEach(paragraph -> paragraph.forEach(syntagmaticAnalyser::analyse));
+						stringBuilder = new StringBuilder();
+					}
+				}
+			}
+			if (!stringBuilder.isEmpty()) {
+				List<List<String>> paragraphs = gParser.parserText(stringBuilder.toString());
+				paragraphs.forEach(paragraph -> paragraph.forEach(syntagmaticAnalyser::analyse));
+			}
 		} catch (IOException e) {
 			System.out.println("Ошибка при чтении файла с текстом");
 		}
