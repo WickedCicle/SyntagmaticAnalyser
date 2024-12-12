@@ -13,4 +13,4 @@
 @rem запуск основной работы
 @cd %~dp0
 @echo Для работы нужна установленная Java версии 17+
-@java -Dtext-file-path=%INPUT_FILE% -Doutput-relationship-file-path=%OUTPUT_RESULT_RELATiONS% -Doutput-syntagmatic-links-file-path=%OUTPUT_SYNTAGMATIC_LINKS% -Doutput-table-file-path=%OUTPUT_EXCEL_REPORT% -Dallowed-type-of-speech-for-result-file-path=%ALLOWED_TYPE_OF_SPEECH_RESULT% -jar syntagmatic-analyser-1.1.0-jar-with-dependencies.jar
+java -Xmx2048m -Dtext-file-path=%INPUT_FILE% -Doutput-relationship-file-path=%OUTPUT_RESULT_RELATiONS% -Doutput-syntagmatic-links-file-path=%OUTPUT_SYNTAGMATIC_LINKS% -Doutput-table-file-path=%OUTPUT_EXCEL_REPORT% -Dallowed-type-of-speech-for-result-file-path=%ALLOWED_TYPE_OF_SPEECH_RESULT% -jar syntagmatic-analyser-1.1.0-jar-with-dependencies.jar
